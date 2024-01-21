@@ -11,7 +11,6 @@ public class App {
         MainWindow window = new MainWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
         window.show();
         window.goToHome();
-        hallo
         
     }
 }
