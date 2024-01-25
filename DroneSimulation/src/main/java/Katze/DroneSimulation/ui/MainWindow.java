@@ -22,6 +22,8 @@ public class MainWindow {
 		this.frame = new JFrame();
 		this.frame.setTitle(title);
 		this.frame.setSize(width, height);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		this.pageHome = new PageHome();
 

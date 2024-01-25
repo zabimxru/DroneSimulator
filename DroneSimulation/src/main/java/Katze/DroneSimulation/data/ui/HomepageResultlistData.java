@@ -1,6 +1,6 @@
 package Katze.DroneSimulation.data.ui;
 
-public class HomepageResultlistData {
+public class HomepageResultlistData implements Comparable<HomepageResultlistData> {
 	private String dronetype;
 	private String serialnumber;
 	
@@ -25,6 +25,10 @@ public class HomepageResultlistData {
 		this.serialnumber = serialnumber;
 	}
 	
+	@Override
+	public int compareTo(HomepageResultlistData other) {
+		return this.getSerialnumber().compareTo(other.getSerialnumber());
+	}
 	
 	
 }
