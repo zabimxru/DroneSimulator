@@ -13,13 +13,15 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
@@ -29,6 +31,7 @@ import Katze.DroneSimulation.data.TestData;
 import Katze.DroneSimulation.data.ui.HomepageResultlistData;
 import Katze.DroneSimulation.logic.MergeSort;
 import Katze.DroneSimulation.ui.ColorTheme;
+import Katze.DroneSimulation.ui.SwingTools;
 
 public class PageHome extends JPanel  {
 	private String attribute;
@@ -83,7 +86,7 @@ public class PageHome extends JPanel  {
 	}
 	
 	private JList<HomepageResultlistData> resultList;
-	private final HomepageResultlistData[] originalData;
+	private HomepageResultlistData[] originalData;
 	
 	public static HomepageResultlistData[] filterBySearchAttribute(HomepageResultlistData[] array, String searchBarInput) {
 		return Arrays.stream(array)
@@ -109,33 +112,110 @@ public class PageHome extends JPanel  {
 		// oben, links, unten, rechts die Grenzen
 		this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 
-		//Titel hinzufügen
-        JTextPane homeTitle = new JTextPane();
-        homeTitle.setText("HomePage");
-        
-        //Titel mittig machen
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        homeTitle.setParagraphAttributes(center, true);
-        
-        // Platziert homeTitle oben
-        this.add(homeTitle, BorderLayout.NORTH);
-        
+		//Container mit Titel und Suchleiste erstellen
+		JPanel topContainer = createTopContainer();
+		this.add(topContainer, BorderLayout.NORTH);
+		
+		JComponent resultList = createResultList();
+
+
+		// Liste hinzufügen
+		this.add(resultList, BorderLayout.CENTER);//Später
+	}
+	
+	private JPanel createTopContainer() {
+
+		JPanel container = new JPanel();
+		container.setLayout(new BorderLayout(0, 10)); //Parameter geben Pixel an, wie groß der Abstand zwischen Kindelementen sein soll
+		
+		//Erstellt zentriertes Label mit dem Titel
+		JPanel titleContainer = SwingTools.createCenteredLabel("Home");
+		container.add(titleContainer, BorderLayout.NORTH);
 
 		// Textfeld Searchbar
 		JTextField searchBar = new JTextField();
 
 		// Platziert Searchbar oben
-		this.add(searchBar, BorderLayout.CENTER);
+		container.add(searchBar, BorderLayout.SOUTH);
 		
+
 		originalData = TestData.HOMEPAGERESULTLISTDATA_DATA.clone();
 		//Button to Search activate filter Alg.
 		JButton searchButton = new JButton("Search");
-		
 		JButton mergeButton = new JButton("Sort");
-		
 		JButton defaultButton = new JButton("Default view");
 		
+		//Add ActionListener to the defaultButton
+				defaultButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Default view button clicked");
+						try {
+							//Restore the original data when the Default view button is clicked
+							DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
+							listModel.clear();
+							listModel.addAll(Arrays.asList(originalData));
+						} catch (ClassCastException ex) {
+							ex.printStackTrace();				}
+					}
+				});
+				
+				//Add ActionListener to the searchButton
+				searchButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Search button clicked");
+						String searchBarInput = searchBar.getText();
+						
+						HomepageResultlistData[] filteredResults = filterBySearchAttribute(
+							TestData.HOMEPAGERESULTLISTDATA_DATA, searchBarInput);
+						
+						DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
+						listModel.clear();
+						listModel.addAll(Arrays.asList(filteredResults));
+						resultList.repaint();
+					}
+				});
+				
+				//Add ActionListener to the mergeButton
+				mergeButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Sort Button clicked");
+						String searchBarInput = searchBar.getText();
+						
+						DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
+						HomepageResultlistData[] dataArray = new HomepageResultlistData[listModel.size()];
+						listModel.copyInto(dataArray);
+						
+						//Sort the data using MergeSort
+						MergeSort<HomepageResultlistData> mergeSort = new MergeSort<>();
+						mergeSort.mergeSort(dataArray, 0, dataArray.length -1);
+						
+						//Update the JList with the sorted data
+						listModel.clear();
+						listModel.addAll(Arrays.asList(dataArray));
+						resultList.repaint();
+					}
+				});
+				//Place the searchButton on
+				JPanel buttonPanel = new JPanel();
+				buttonPanel.setLayout(new BorderLayout());
+				buttonPanel.add(searchButton, BorderLayout.EAST);
+				
+				JPanel mergeButtonPanel = new JPanel();
+				mergeButtonPanel.setLayout(new FlowLayout());
+				mergeButtonPanel.add(mergeButton);
+				buttonPanel.add(mergeButtonPanel, BorderLayout.CENTER);
+				
+				this.add(buttonPanel, BorderLayout.EAST);
+				this.add(defaultButton, BorderLayout.WEST);
+				
+		return container;
+	}
+
+	private JComponent createResultList() {
+
 		DefaultListModel<HomepageResultlistData> listData = new DefaultListModel<>();
 		//Alle Testdaten in die Resultlisten testweise einfügen
 		listData.addAll(Arrays.asList(TestData.HOMEPAGERESULTLISTDATA_DATA));
@@ -146,6 +226,7 @@ public class PageHome extends JPanel  {
 		//Beeinflusst Zeilenaussehen in KLasse ResultListCellRenderer oben
 		resultList.setCellRenderer(new ResultlistCellRenderer());
 		
+
 		//Add ListSelectionListener to the JList
 		resultList.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -161,76 +242,8 @@ public class PageHome extends JPanel  {
 			}
 		});
 		
-		//Add ActionListener to the defaultButton
-		defaultButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Default view button clicked");
-				try {
-					//Restore the original data when the Default view button is clicked
-					DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
-					listModel.clear();
-					listModel.addAll(Arrays.asList(originalData));
-				} catch (ClassCastException ex) {
-					ex.printStackTrace();				}
-			}
-		});
+		return new JScrollPane(resultList);
 		
-		//Add ActionListener to the searchButton
-		searchButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Search button clicked");
-				String searchBarInput = searchBar.getText();
-				
-				HomepageResultlistData[] filteredResults = filterBySearchAttribute(
-					TestData.HOMEPAGERESULTLISTDATA_DATA, searchBarInput);
-				
-				DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
-				listModel.clear();
-				listModel.addAll(Arrays.asList(filteredResults));
-				resultList.repaint();
-			}
-		});
-		
-		//Add ActionListener to the mergeButton
-		mergeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Sort Button clicked");
-				String searchBarInput = searchBar.getText();
-				
-				DefaultListModel<HomepageResultlistData> listModel = (DefaultListModel<HomepageResultlistData>) resultList.getModel();
-				HomepageResultlistData[] dataArray = new HomepageResultlistData[listModel.size()];
-				listModel.copyInto(dataArray);
-				
-				//Sort the data using MergeSort
-				MergeSort<HomepageResultlistData> mergeSort = new MergeSort<>();
-				mergeSort.mergeSort(dataArray, 0, dataArray.length -1);
-				
-				//Update the JList with the sorted data
-				listModel.clear();
-				listModel.addAll(Arrays.asList(dataArray));
-				resultList.repaint();
-			}
-		});
-		
-		//Place the searchButton on
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BorderLayout());
-		buttonPanel.add(searchButton, BorderLayout.EAST);
-		
-		JPanel mergeButtonPanel = new JPanel();
-		mergeButtonPanel.setLayout(new FlowLayout());
-		mergeButtonPanel.add(mergeButton);
-		buttonPanel.add(mergeButtonPanel, BorderLayout.CENTER);
-		
-		this.add(buttonPanel, BorderLayout.EAST);
-		this.add(defaultButton, BorderLayout.BEFORE_LINE_BEGINS);
-		
-		
-		// Liste hinzufügen
-		this.add(resultList, BorderLayout.SOUTH);
 	}
 	
 	private void openPageDroneInfo(HomepageResultlistData selectedData) {
@@ -247,5 +260,11 @@ public class PageHome extends JPanel  {
 		droneInfoFrame.setLocationRelativeTo(null);
 		//Make the frame visible
 		droneInfoFrame.setVisible(true);
+		
+		//Return a new JScrollPane containing the the updated JList
+		JScrollPane scrollPane = new JScrollPane(resultList);
+		scrollPane.setViewportView(resultList);
+		revalidate(); //Refresh the Layout
+
 	}
 }
