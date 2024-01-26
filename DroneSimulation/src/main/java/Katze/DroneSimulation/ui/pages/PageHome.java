@@ -3,34 +3,31 @@ package Katze.DroneSimulation.ui.pages;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Arrays;
 
-import javax.swing.*;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import Katze.DroneSimulation.data.TestData;
 import Katze.DroneSimulation.data.ui.HomepageResultlistData;
 import Katze.DroneSimulation.logic.MergeSort;
 import Katze.DroneSimulation.ui.ColorTheme;
+import Katze.DroneSimulation.ui.MainWindow;
 import Katze.DroneSimulation.ui.SwingTools;
 
 public class PageHome extends JPanel  {
@@ -237,6 +234,7 @@ public class PageHome extends JPanel  {
 					//Handle teh selection
 					if(selectedData != null) {
 						openPageDroneInfo(selectedData);
+						//MainWindow.goToDroneInfo(selectedData);
 					}
 				}
 			}
@@ -251,7 +249,7 @@ public class PageHome extends JPanel  {
 		JFrame droneInfoFrame = new JFrame("Drone Information");
 		droneInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//Create an instance of PageDroneInfo and set the selected data
-		PageDroneInfo pageDroneInfo = new PageDroneInfo(selectedData);
+		PageDroneInfo pageDroneInfo = new PageDroneInfo();
 		//Add the PageDroneInfo instance to the JFrame
 		droneInfoFrame.getContentPane().add(pageDroneInfo);
 		

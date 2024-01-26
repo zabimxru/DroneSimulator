@@ -23,14 +23,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import Katze.DroneSimulation.data.TestData;
 import Katze.DroneSimulation.data.ui.DroneDynamicsResultListData;
-import Katze.DroneSimulation.data.ui.HomepageResultlistData;
-import Katze.DroneSimulation.logic.MergeSort;
 import Katze.DroneSimulation.ui.ColorTheme;
 
 public class PageDroneDynamics extends JPanel {

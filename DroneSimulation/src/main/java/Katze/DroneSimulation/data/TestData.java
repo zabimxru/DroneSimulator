@@ -6,6 +6,7 @@ import Katze.DroneSimulation.data.api.Drone;
 import Katze.DroneSimulation.data.api.DroneDynamic;
 import Katze.DroneSimulation.data.api.DroneType;
 import Katze.DroneSimulation.data.ui.DroneDynamicsResultListData;
+import Katze.DroneSimulation.data.ui.DroneInfoTableData;
 import Katze.DroneSimulation.data.ui.HomepageResultlistData;
 
 public class TestData {
@@ -29,6 +30,12 @@ public class TestData {
 			new HomepageResultlistData("Katze", "MIAU-1234"),
 			new HomepageResultlistData("Hund", "WUFF-1223")
 	};
+	
+//	public static final DroneInfoTableData[] DRONEINFO_TABLE_DATA = {
+//			new DroneInfoTableData(new Date(), 11.01, "Kuchen"),
+//			new DroneInfoTableData(new Date(), 11.01, "Kuchen"),
+//			new DroneInfoTableData(new Date(), 11.01, "Kuchen"),
+//	};
 	
     public static final DroneDynamicsResultListData[] DRONEDYNAMICS_DATA = {
             new DroneDynamicsResultListData(new Date(), 30, 0.5, 0.75, 12.345, 67.890, 90, "ON"),

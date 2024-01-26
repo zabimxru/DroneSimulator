@@ -1,9 +1,5 @@
 package Katze.DroneSimulation.ui;
 
-import java.awt.Button;
-import java.awt.FlowLayout;
-import java.awt.Label;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
