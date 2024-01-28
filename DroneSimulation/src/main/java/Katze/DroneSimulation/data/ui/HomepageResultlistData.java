@@ -1,6 +1,13 @@
 package Katze.DroneSimulation.data.ui;
 
-public class HomepageResultlistData implements Comparable<HomepageResultlistData> {
+import Katze.DroneSimulation.data.TableViewable;
+
+public class HomepageResultlistData implements Comparable<HomepageResultlistData>, TableViewable {
+	
+	public static final String[] TABLE_HEADERS = {
+			"Drone Type", "Serial Nr."
+	};
+	
 	private String dronetype;
 	private String serialnumber;
 	
@@ -28,6 +35,14 @@ public class HomepageResultlistData implements Comparable<HomepageResultlistData
 	@Override
 	public int compareTo(HomepageResultlistData other) {
 		return this.getSerialnumber().compareTo(other.getSerialnumber());
+	}
+
+	@Override
+	public Object[] getRowData() {
+		
+		return new Object[] {
+				this.dronetype, this.serialnumber
+		};
 	}
 
 

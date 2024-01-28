@@ -2,7 +2,14 @@ package Katze.DroneSimulation.data.api;
 
 import java.util.Date;
 
-public class DroneDynamic {
+import Katze.DroneSimulation.data.TableViewable;
+
+public class DroneDynamic implements TableViewable {
+	
+	public static final String[] TABLE_HEADERS = {
+			"ID", "Timestamp", "Drone", "Speed", "Align Roll", "Control Range", "Align Yaw", "Longitude", "Latitude", "Battery Status", "Last Seen", "Status"
+	};
+	
 	private int id;
 	private Date timestamp;
 	private String drone;
@@ -15,6 +22,8 @@ public class DroneDynamic {
 	private double batteryStat;
 	private Date lastSeen;
 	private String stat;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -86,6 +95,16 @@ public class DroneDynamic {
 	}
 	public void setStat(String stat) {
 		this.stat = stat;
+	}
+	
+	
+
+	@Override
+	public Object[] getRowData() {
+		
+		return new Object[] {
+				id, timestamp, drone, speed, alignRoll, controlRange, alignYaw, longitude, latitude, batteryStat, lastSeen, stat
+		};
 	}
 	
 

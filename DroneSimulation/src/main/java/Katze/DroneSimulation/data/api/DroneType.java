@@ -10,6 +10,19 @@ public class DroneType {
 	private double batteryCap;
 	private double controlRange;
 	private double maxCarriage;
+	
+	public DroneType(int id, String manufacturer, String typename, double weight, double maxSpeed, double minSpeed,
+			double batteryCap, double controlRange, double maxCarriage) {
+		this.id = id;
+		this.manufacturer = manufacturer;
+		this.typename = typename;
+		this.weight = weight;
+		this.maxSpeed = maxSpeed;
+		this.minSpeed = minSpeed;
+		this.batteryCap = batteryCap;
+		this.controlRange = controlRange;
+		this.maxCarriage = maxCarriage;
+	}
 	public int getId() {
 		return id;
 	}

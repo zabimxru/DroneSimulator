@@ -10,6 +10,14 @@ public class Drone {
     private int carriageWeight;
     private String carriageType;
     
+	public Drone(int id, String dronetype, Date created, String serialnumber, int carriageWeight, String carriageType) {
+		this.id = id;
+		this.dronetype = dronetype;
+		this.created = created;
+		this.serialnumber = serialnumber;
+		this.carriageWeight = carriageWeight;
+		this.carriageType = carriageType;
+	}
 	public int getId() {
 		return id;
 	}

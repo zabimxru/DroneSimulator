@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,29 +14,29 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import Katze.DroneSimulation.data.TestData;
 import Katze.DroneSimulation.data.api.Drone;
-import Katze.DroneSimulation.logic.ButtonOpenPopUp;
+import Katze.DroneSimulation.data.api.DroneType;
+import Katze.DroneSimulation.logic.APIDataHandler;
 import Katze.DroneSimulation.logic.ui.ActionGoToDroneDynamics;
 import Katze.DroneSimulation.logic.ui.ActionGoToHome;
 import Katze.DroneSimulation.ui.MainWindow;
 import Katze.DroneSimulation.ui.SwingTools;
+import Katze.DroneSimulation.ui.popups.PopUpDroneTypeInfo;
 
 public class PageDroneInfo extends JPanel {
 	
 	private final MainWindow window;
-	private Drone droneData;
+	private final Drone droneData;
 	
-	public PageDroneInfo(MainWindow window) { //wir wollen hier MainWindow haben weil der Actionlistener Mainwindow braucht um die jw. Seite aufzurufen
+	public PageDroneInfo(MainWindow window, Drone droneData) { //wir wollen hier MainWindow haben weil der Actionlistener Mainwindow braucht um die jw. Seite aufzurufen
 		this.window = window;
+		this.droneData = droneData;
 		this.setLayout(new BorderLayout(0, 10));
 		this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 		createTopContent();
 		createMidContent();
 		createBotContent();	
 	}
-
-	
 	
 	
 	private void createTopContent() {
@@ -86,17 +85,20 @@ public class PageDroneInfo extends JPanel {
 				//Abstand
 				boxPanel.add(Box.createHorizontalStrut(50));
 				//Label für eigentlichen Drohnentyp
-				JLabel droneType = new JLabel(droneData.getDronetype());
-				boxPanel.add(droneType);
+				JLabel labelDroneType = new JLabel(droneData.getDronetype());
+				boxPanel.add(labelDroneType);
 				Font fontDroneType = new Font("Arial",Font.ITALIC, 15);
-				droneType.setFont(fontDroneType);
+				labelDroneType.setFont(fontDroneType);
 				
 				//Abstand
 				boxPanel.add(Box.createHorizontalStrut(25));
 				
 				//PopUp
 				JButton popupButton = new JButton("i");
-				ButtonOpenPopUp.openPopUp(popupButton);
+				popupButton.addActionListener(e -> {
+					DroneType droneType = APIDataHandler.getTypeFromDrone(droneData);
+					new PopUpDroneTypeInfo(droneType);
+				});
 				boxPanel.add(popupButton);
 
 			
@@ -135,11 +137,7 @@ public class PageDroneInfo extends JPanel {
 				buttonDyn.addActionListener(new ActionGoToDroneDynamics(window));
 				buttonPanel.add(buttonDyn, BorderLayout.SOUTH);
 	}
-	
-	public void setDroneData(Drone drone) {
-		droneData = drone;
-	}
-	
+		
 }
 
 
