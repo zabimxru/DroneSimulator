@@ -20,11 +20,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Katze.DroneSimulation.data.TestData;
+import Katze.DroneSimulation.data.api.Drone;
 import Katze.DroneSimulation.data.ui.HomepageResultlistData;
+import Katze.DroneSimulation.logic.APIDataHandler;
 import Katze.DroneSimulation.logic.MergeSort;
 import Katze.DroneSimulation.ui.ColorTheme;
 import Katze.DroneSimulation.ui.MainWindow;
@@ -82,6 +85,8 @@ public class PageHome extends JPanel  {
 		
 	}
 	
+	private final MainWindow window;
+	
 	private JList<HomepageResultlistData> resultList;
 	private HomepageResultlistData[] originalData;
 	
@@ -95,14 +100,14 @@ public class PageHome extends JPanel  {
 		return attribute;
 	}
 	
-	public PageHome(String attribute) {
-		this.attribute = attribute;
-		this.originalData = TestData.HOMEPAGERESULTLISTDATA_DATA.clone();
-	}
-	
-	
+//	public PageHome(String attribute) {
+//		this.attribute = attribute;
+//		this.originalData = TestData.HOMEPAGERESULTLISTDATA_DATA.clone();
+//	}
 
-	public PageHome() {
+	public PageHome(MainWindow window) {
+		
+		this.window = window;
 		
 		// Abstand zwischen den Elementen (Searchbar, Resultlist: 10 Pixel vertikal
 		this.setLayout(new BorderLayout(0, 10));
@@ -233,8 +238,8 @@ public class PageHome extends JPanel  {
 					HomepageResultlistData selectedData = resultList.getSelectedValue();
 					//Handle teh selection
 					if(selectedData != null) {
-						openPageDroneInfo(selectedData);
-						//MainWindow.goToDroneInfo(selectedData);
+						Drone droneInfo = APIDataHandler.getDroneBySerialNr(selectedData.getSerialnumber());
+						window.goToDroneInfo(droneInfo);
 					}
 				}
 			}
@@ -244,25 +249,5 @@ public class PageHome extends JPanel  {
 		
 	}
 	
-	private void openPageDroneInfo(HomepageResultlistData selectedData) {
-		//Create adn show a new JFrame for PageDroneInfo
-		JFrame droneInfoFrame = new JFrame("Drone Information");
-		droneInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//Create an instance of PageDroneInfo and set the selected data
-		PageDroneInfo pageDroneInfo = new PageDroneInfo();
-		//Add the PageDroneInfo instance to the JFrame
-		droneInfoFrame.getContentPane().add(pageDroneInfo);
-		
-		//Set frame properties
-		droneInfoFrame.setSize(400, 300);
-		droneInfoFrame.setLocationRelativeTo(null);
-		//Make the frame visible
-		droneInfoFrame.setVisible(true);
-		
-		//Return a new JScrollPane containing the the updated JList
-		JScrollPane scrollPane = new JScrollPane(resultList);
-		scrollPane.setViewportView(resultList);
-		revalidate(); //Refresh the Layout
 
-	}
 }

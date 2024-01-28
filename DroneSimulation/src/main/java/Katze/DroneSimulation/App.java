@@ -10,8 +10,8 @@ public class App {
     public static void main( String[] args ) {
         MainWindow window = new MainWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
         window.show();
-//        window.goToHome();
-        window.goToDroneInfo();
+        window.goToHome();
+//        window.goToDroneInfo();
 //        window.goToDroneDynamic();
         
         

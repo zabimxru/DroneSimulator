@@ -1,70 +1,44 @@
 package Katze.DroneSimulation.ui.pages;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 import Katze.DroneSimulation.data.TestData;
+import Katze.DroneSimulation.data.api.Drone;
+import Katze.DroneSimulation.logic.ButtonOpenPopUp;
+import Katze.DroneSimulation.logic.ui.ActionGoToDroneDynamics;
+import Katze.DroneSimulation.logic.ui.ActionGoToHome;
 import Katze.DroneSimulation.ui.MainWindow;
 import Katze.DroneSimulation.ui.SwingTools;
 
 public class PageDroneInfo extends JPanel {
 	
-	public PageDroneInfo() {
+	private final MainWindow window;
+	private Drone droneData;
+	
+	public PageDroneInfo(MainWindow window) { //wir wollen hier MainWindow haben weil der Actionlistener Mainwindow braucht um die jw. Seite aufzurufen
+		this.window = window;
 		this.setLayout(new BorderLayout(0, 10));
 		this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 		createTopContent();
 		createMidContent();
 		createBotContent();	
 	}
+
 	
-	private void showDroneTypeTable() {
-		//Create a new JFrame
-		JFrame tableFrame = new JFrame("Drone Type Information");
-		//Set layout manager to BorderLayout
-		tableFrame.setLayout(new BorderLayout());
-		//Create column names
-		String[] columnNames = {"Manufacturer", "Type Name", "Weight", "Max Speed",
-                "Min Speed", "Battery Capacity", "Control Range", "Max Carriage"};
-		
-		//Sample data
-		String[][] rowData = { 
-				{"ManufacturerData", "TypeNameData", "WeightData", "MaxSpeedData",
-                "MinSpeedData", "BatteryCapacityData", "ControlRangeData", "MaxCarriageData"}
-		};
-		
-		//Create a table model
-		DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
-		//Create a JTable with the model
-		JTable droneInfoTable = new JTable(model);
-		//Add the table to a JScrollPane
-		JScrollPane scrollPane = new JScrollPane(droneInfoTable);
-		//Add the ScrollPane to the frame
-		tableFrame.add(scrollPane, BorderLayout.CENTER);
-		
-		//Set frame properties
-		tableFrame.setSize(500, 300);
-		tableFrame.setLocationRelativeTo(null);
-		tableFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//Make the frame visible
-		tableFrame.setVisible(true);
-	}
+	
 	
 	private void createTopContent() {
 		JPanel panelTop = new JPanel();
@@ -81,7 +55,7 @@ public class PageDroneInfo extends JPanel {
 		this.add(panelMid, BorderLayout.CENTER);
 		panelMid.setLayout(new BorderLayout(0, 10));
 
-			//panel in panelMid oben erzeugen mit Boxlayout
+			//panel fpr SerialNr und DroneType Information in panelMid oben erzeugen mit Boxlayout
 			JPanel boxPanel = new JPanel();
 			panelMid.add(boxPanel, BorderLayout.NORTH);
 			boxPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -95,7 +69,7 @@ public class PageDroneInfo extends JPanel {
 				boxPanel.add(Box.createHorizontalStrut(50));
 				
 				//Label rechts neben "Serial Nr" für eigentliche Seriennummer
-				JLabel serialNr = new JLabel(TestData.SERIAL_NUMBER);
+				JLabel serialNr = new JLabel(droneData.getSerialnumber());
 				//serialNr.setForeground(Color.RED);
 				boxPanel.add(serialNr);
 				Font fontSerialNr = new Font("Arial",Font.ITALIC, 15);
@@ -112,7 +86,7 @@ public class PageDroneInfo extends JPanel {
 				//Abstand
 				boxPanel.add(Box.createHorizontalStrut(50));
 				//Label für eigentlichen Drohnentyp
-				JLabel droneType = new JLabel(TestData.DRONE_TYPE);
+				JLabel droneType = new JLabel(droneData.getDronetype());
 				boxPanel.add(droneType);
 				Font fontDroneType = new Font("Arial",Font.ITALIC, 15);
 				droneType.setFont(fontDroneType);
@@ -122,29 +96,24 @@ public class PageDroneInfo extends JPanel {
 				
 				//PopUp
 				JButton popupButton = new JButton("i");
-				popupButton.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						//Handle button click by creating and showing a new JFrame
-						showDroneTypeTable();
-					}
-				});
+				ButtonOpenPopUp.openPopUp(popupButton);
 				boxPanel.add(popupButton);
 
-				
+			
+			//Panel erzeugen für die Drone Infos der jw. Seriennummer	
 			JPanel panelFuerAkkordion = new JPanel();
 			panelMid.add(panelFuerAkkordion, BorderLayout.CENTER);
 			
-			String[] columns = {"Created", "Carriage Weight", "Carriage Type"};
-			Object[][] data = {
-					{new Date(), new Float(11.01), "miaumiau"},
-
-			};
-			JTable table = new JTable(data, columns);
-			table.setRowSelectionAllowed(true);
-			JScrollPane scroll = new JScrollPane(table);
-			scroll.setPreferredSize(new Dimension(550, 38));
-			panelFuerAkkordion.add(scroll);
+				String[] columns = {"Created", "Carriage Weight", "Carriage Type"};
+				Object[][] data = {
+						{droneData.getCreated(), droneData.getCarriageWeight(), droneData.getCarriageType()},
+	
+				};
+				JTable table = new JTable(data, columns);
+				table.setRowSelectionAllowed(true);
+				JScrollPane scroll = new JScrollPane(table);
+				scroll.setPreferredSize(new Dimension(550, 38));
+				panelFuerAkkordion.add(scroll);
 	   
 			
 			
@@ -155,38 +124,20 @@ public class PageDroneInfo extends JPanel {
 		JPanel panelBottom = new JPanel();
 		this.add(panelBottom, BorderLayout.SOUTH);
 		
-		
 			JPanel buttonPanel = new JPanel();
 			panelBottom.add(buttonPanel);
-			JButton button1 = new JButton("Back");
 			
-			button1.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					//Handle button click by creating and showing a new JFrame
-					goToHome();
-					
-				}
-			});
-			
-			buttonPanel.add(button1, BorderLayout.WEST);
-			
-			
-			JButton button2 = new JButton("Dynamics");
-			buttonPanel.add(button2, BorderLayout.SOUTH);
-			
-			button2.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					//Handle button click by creating and showing a new JFrame
-					goToDroneDynamic();
-					
-				}
-			});
-			
-		
-		
-
+				JButton buttonHome = new JButton("Back");
+				buttonHome.addActionListener(new ActionGoToHome(window));
+				buttonPanel.add(buttonHome, BorderLayout.WEST);
+				
+				JButton buttonDyn = new JButton("Dynamics");
+				buttonDyn.addActionListener(new ActionGoToDroneDynamics(window));
+				buttonPanel.add(buttonDyn, BorderLayout.SOUTH);
+	}
+	
+	public void setDroneData(Drone drone) {
+		droneData = drone;
 	}
 	
 }

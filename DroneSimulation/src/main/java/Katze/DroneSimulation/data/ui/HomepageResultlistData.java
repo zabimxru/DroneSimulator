@@ -29,6 +29,8 @@ public class HomepageResultlistData implements Comparable<HomepageResultlistData
 	public int compareTo(HomepageResultlistData other) {
 		return this.getSerialnumber().compareTo(other.getSerialnumber());
 	}
+
+
 	
 	
 }

@@ -28,9 +28,25 @@ import javax.swing.text.StyleConstants;
 
 import Katze.DroneSimulation.data.TestData;
 import Katze.DroneSimulation.data.ui.DroneDynamicsResultListData;
+import Katze.DroneSimulation.logic.ui.ActionGoToHome;
 import Katze.DroneSimulation.ui.ColorTheme;
+import Katze.DroneSimulation.ui.MainWindow;
 
 public class PageDroneDynamics extends JPanel {
+	
+    public static DroneDynamicsResultListData[] filterBySearchAttribute(DroneDynamicsResultListData[] array, String searchBarInput) {
+		return Arrays.stream(array)
+				.filter(resultlistData -> {
+					//Convert Date to String for comparison
+					SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+					String formattimestamp = dateformat.format(resultlistData.getTimestamp());
+					
+					//Compare the formatted timestamp with searchBarInput
+					return formattimestamp.contains(searchBarInput);
+				})
+				.toArray(DroneDynamicsResultListData[]::new);
+	}
+	
     private class ResultListCellRenderer implements ListCellRenderer<DroneDynamicsResultListData> {
         private final JPanel panelRow;
         private final JLabel labelTimestamp;
@@ -99,20 +115,7 @@ public class PageDroneDynamics extends JPanel {
     
     private DroneDynamicsResultListData[] originalData;
     
-    public static DroneDynamicsResultListData[] filterBySearchAttribute(DroneDynamicsResultListData[] array, String searchBarInput) {
-		return Arrays.stream(array)
-				.filter(resultlistData -> {
-					//Convert Date to String for comparison
-					SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-					String formattimestamp = dateformat.format(resultlistData.getTimestamp());
-					
-					//Compare the formatted timestamp with searchBarInput
-					return formattimestamp.contains(searchBarInput);
-				})
-				.toArray(DroneDynamicsResultListData[]::new);
-	}
-
-    public PageDroneDynamics() {
+    public PageDroneDynamics(MainWindow window) {
     	originalData = TestData.DRONEDYNAMICS_DATA.clone();
     	setLayout(new BorderLayout(0, 10));
 
@@ -152,16 +155,7 @@ public class PageDroneDynamics extends JPanel {
         JButton defaultButton = new JButton("Default view");
         
         
-        Homepage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(PageDroneDynamics.this);
-                frame.getContentPane().removeAll();
-                frame.getContentPane().add(new PageHome());
-                frame.revalidate();
-                frame.repaint();
-            }
-        });
+        Homepage.addActionListener(new ActionGoToHome(window));
         
         bottomPanel.add(DroneInfo);
         bottomPanel.add(Homepage);
@@ -226,4 +220,5 @@ public class PageDroneDynamics extends JPanel {
 		//buttonPanel.add(mergeButtonPanel);
 		
     }
+
 }
