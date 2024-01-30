@@ -21,28 +21,21 @@ public class TestData {
 	}
 	
 	public static final Drone[] DRONE_DATA = {
-			//int id, String dronetype, Date created, String serialnumber, int carriageWeight, String carriageType
 			new Drone(71, "Katze", createDateFromString("28.01.2024"), "MIAU-1234", 45, "MEKMEK"),
 			new Drone(72, "Hund", createDateFromString("29.01.2024"), "WUFF-1234", 50, "EKEK")
 	};
 	
 	public static final DroneDynamic[] DRONEDYNAMIC_DATA = {
+			new DroneDynamic(21,createDateFromString("28.01.2024") ,"Katze",150.00, 1.5, 1.5,
+					2.5, 2.5, 2.5, 2.5,createDateFromString("28.01.2024"), "ON"),
+			new DroneDynamic(21,createDateFromString("28.01.2024") ,"Katze",150.00, 1.5, 1.5,
+					2.5, 2.5, 2.5, 2.5,createDateFromString("28.01.2024"), "ON"),
+			new DroneDynamic(21,createDateFromString("28.01.2024") ,"Katze",150.00, 1.5, 1.5,
+					2.5, 2.5, 2.5, 2.5,createDateFromString("28.01.2024"), "ON")
 			
 	};
 	
 	public static final DroneType[] DRONETYPE_DATA = {
-//			int id, String manufacturer, String typename, double weight, double maxSpeed, double minSpeed,
-//			double batteryCap, double controlRange, double maxCarriage
 			new DroneType(11, "ABC", "abc", 10.00, 10000, 0, 500, 2.9, 59)
 	};
-	
-
-//    public static final DroneDynamicsResultListData[] DRONEDYNAMICS_DATA = {
-//            new DroneDynamicsResultListData(new Date(), 30, 0.5, 0.75, 12.345, 67.890, 90, "ON"),
-//            new DroneDynamicsResultListData(new Date(), 29, 0.4, 6.54, 11.111, 54.231, 74, "OF")
-//        };
-	
-	public static final String SERIAL_NUMBER = "MIAU-1234";
-	public static final String DRONE_TYPE = "Katze";
-	
 }

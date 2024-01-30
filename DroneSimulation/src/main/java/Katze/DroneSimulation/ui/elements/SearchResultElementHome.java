@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Katze.DroneSimulation.data.TableViewable;
 
-public class SearchResultElement<T extends TableViewable> extends JPanel {
+public class SearchResultElementHome<T extends TableViewable> extends JPanel {
 	
 	private final String[] tableHeaders;
 	private final Function<String, List<T>> searchResultProvider;
@@ -28,7 +28,7 @@ public class SearchResultElement<T extends TableViewable> extends JPanel {
 	private DefaultTableModel tableModel;
 	private List<T> currentData;
 	
-	public SearchResultElement(String[] tableHeaders, Function<String, List<T>> searchResultProvider, Consumer<T> rowClickedConsumer) {
+	public SearchResultElementHome(String[] tableHeaders, Function<String, List<T>> searchResultProvider, Consumer<T> rowClickedConsumer) {
 		this.tableHeaders = tableHeaders;
 		this.searchResultProvider = searchResultProvider;
 		this.rowClickedConsumer = rowClickedConsumer;
@@ -41,7 +41,6 @@ public class SearchResultElement<T extends TableViewable> extends JPanel {
 		this.add(createResultTable(), BorderLayout.CENTER);
 		
 	}
-	
 
 	private JPanel createSearchbar() {
 		JPanel container = new JPanel();

@@ -23,6 +23,22 @@ public class DroneDynamic implements TableViewable {
 	private Date lastSeen;
 	private String stat;
 	
+
+	public DroneDynamic(int id, Date timestamp, String drone, double speed, double alignRoll, double controlRange,
+			double alignYaw, double longitude, double latitude, double batteryStat, Date lastSeen, String stat) {
+		this.id = id;
+		this.timestamp = timestamp;
+		this.drone = drone;
+		this.speed = speed;
+		this.alignRoll = alignRoll;
+		this.controlRange = controlRange;
+		this.alignYaw = alignYaw;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.batteryStat = batteryStat;
+		this.lastSeen = lastSeen;
+		this.stat = stat;
+	}
 	
 	public int getId() {
 		return id;
@@ -106,6 +122,5 @@ public class DroneDynamic implements TableViewable {
 				id, timestamp, drone, speed, alignRoll, controlRange, alignYaw, longitude, latitude, batteryStat, lastSeen, stat
 		};
 	}
-	
 
 }
