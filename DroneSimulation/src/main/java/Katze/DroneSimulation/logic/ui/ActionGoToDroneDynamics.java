@@ -10,6 +10,7 @@ import Katze.DroneSimulation.ui.MainWindow;
 public class ActionGoToDroneDynamics implements ActionListener {
 	private final MainWindow window;
 	private final Drone drone;
+
 	
 	public ActionGoToDroneDynamics(MainWindow window, Drone drone) {
 		this.window = window;

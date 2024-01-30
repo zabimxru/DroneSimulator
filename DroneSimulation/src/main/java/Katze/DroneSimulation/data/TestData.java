@@ -36,6 +36,6 @@ public class TestData {
 	};
 	
 	public static final DroneType[] DRONETYPE_DATA = {
-			new DroneType(11, "ABC", "abc", 10.00, 10000, 0, 500, 2.9, 59)
+			new DroneType(11, "ABC", "abc", 10.00, 10000, 500, 2.9, 59)
 	};
 }

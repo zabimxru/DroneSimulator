@@ -6,19 +6,17 @@ public class DroneType {
 	private String typename;
 	private double weight;
 	private double maxSpeed;
-	private double minSpeed;
 	private double batteryCap;
 	private double controlRange;
 	private double maxCarriage;
 	
-	public DroneType(int id, String manufacturer, String typename, double weight, double maxSpeed, double minSpeed,
+	public DroneType(int id, String manufacturer, String typename, double weight, double maxSpeed,
 			double batteryCap, double controlRange, double maxCarriage) {
 		this.id = id;
 		this.manufacturer = manufacturer;
 		this.typename = typename;
 		this.weight = weight;
 		this.maxSpeed = maxSpeed;
-		this.minSpeed = minSpeed;
 		this.batteryCap = batteryCap;
 		this.controlRange = controlRange;
 		this.maxCarriage = maxCarriage;
@@ -53,12 +51,7 @@ public class DroneType {
 	public void setMaxSpeed(double maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
-	public double getMinSpeed() {
-		return minSpeed;
-	}
-	public void setMinSpeed(double minSpeed) {
-		this.minSpeed = minSpeed;
-	}
+
 	public double getBatteryCap() {
 		return batteryCap;
 	}

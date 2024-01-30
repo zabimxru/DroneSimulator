@@ -22,7 +22,7 @@ public class PopUpDroneTypeInfo extends JFrame {
 
 		// Sample data
 		Object[][] rowData = { { droneType.getManufacturer(), droneType.getTypename(), droneType.getWeight(),
-				droneType.getMaxSpeed(), droneType.getMinSpeed(), droneType.getBatteryCap(),
+				droneType.getMaxSpeed(), droneType.getBatteryCap(),
 				droneType.getControlRange(), droneType.getMaxCarriage()
 
 				} };

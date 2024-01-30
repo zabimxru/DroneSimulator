@@ -3,10 +3,12 @@ package Katze.DroneSimulation.ui.pages;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat; // Import SimpleDateFormat for formatting Date to String
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -15,6 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.WindowConstants;
 
@@ -30,11 +34,12 @@ import Katze.DroneSimulation.ui.ColorTheme;
 import Katze.DroneSimulation.ui.MainWindow;
 import Katze.DroneSimulation.ui.SwingTools;
 import Katze.DroneSimulation.ui.elements.SearchResultElementDroneDyn;
+import Katze.DroneSimulation.ui.elements.SearchResultElementHome;
 import Katze.DroneSimulation.ui.popups.PopUpDroneTypeInfo;
 
 public class PageDroneDynamics extends JPanel {
 	private static final int RESULTLIST_ROW_BORDER_SIZE = 6;
-	
+
 	private class ResultListCellRenderer implements ListCellRenderer<DroneDynamic> {
 		private final JPanel panelRow;
 		private final JLabel labelTimestamp;
@@ -53,31 +58,31 @@ public class PageDroneDynamics extends JPanel {
 			this.labelTimestamp = new JLabel();
 			this.labelTimestamp.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelSpeed = new JLabel();
 			this.labelSpeed.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelAlignmentRoll = new JLabel();
 			this.labelAlignmentRoll.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelControlRange = new JLabel();
 			this.labelControlRange.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelLongitude = new JLabel();
 			this.labelLongitude.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelLatitude = new JLabel();
 			this.labelLatitude.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelBatteryStatus = new JLabel();
 			this.labelBatteryStatus.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
-			
+
 			this.labelStatus = new JLabel();
 			this.labelStatus.setBorder(BorderFactory.createEmptyBorder(RESULTLIST_ROW_BORDER_SIZE,
 					RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE, RESULTLIST_ROW_BORDER_SIZE));
@@ -93,8 +98,8 @@ public class PageDroneDynamics extends JPanel {
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends DroneDynamic> list,
-				DroneDynamic value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<? extends DroneDynamic> list, DroneDynamic value, int index,
+				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
 				this.panelRow.setBorder(BorderFactory.createLineBorder(ColorTheme.COLOR_PRIMARY.darker(), 2));
 			} else {
@@ -127,31 +132,39 @@ public class PageDroneDynamics extends JPanel {
 	private final MainWindow window;
 	private final Drone droneData;
 
-
-	
 	public PageDroneDynamics(MainWindow window, Drone droneData) {
-		
+
 		this.window = window;
 		this.droneData = droneData;
 
-		
 		// Abstand zwischen den Elementen (Searchbar, Resultlist: 10 Pixel vertikal
 		setLayout(new BorderLayout(0, 10));
 		// oben, links, unten, rechts die Grenzen
 		this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-		
+
 		// Container mit Titel erstellen
 		JPanel topContainer = SwingTools.createCenteredLabel("Dynamics");
 		this.add(topContainer, BorderLayout.NORTH);
-		
-		//Container mit Searchbar und Tabelle erstellen
+
+		// Container mit Searchbar und Tabelle erstellen
 		JPanel searchResultContainer = new SearchResultElementDroneDyn<>(DroneDynamic.TABLE_HEADERS,
 				APIDataHandler::getDroneDynamicData);
 		this.add(searchResultContainer, BorderLayout.CENTER);
 		
 		createBotContent();
-		
+
 	}
+	
+
+//			droneDynamic.getId(),
+//			droneDynamic.getTimestamp(),
+//			droneDynamic.getDrone(),
+//			droneDynamic.getSpeed(), droneDynamic.getAlignRoll(),
+//			droneDynamic.getAlignYaw(), droneDynamic.getLongitude(),
+//			droneDynamic.getLatitude(), droneDynamic.getBatteryStat(),
+//			droneDynamic.getLastSeen(), droneDynamic.getStat()},
+
+
 
 	private void createBotContent() {
 
@@ -165,16 +178,13 @@ public class PageDroneDynamics extends JPanel {
 		JButton buttonDroneInfo = new JButton("Back");
 		buttonDroneInfo.addActionListener(new ActionGoToDroneInfo(window, droneData));
 		buttonPanel.add(buttonDroneInfo, BorderLayout.WEST);
-		
+
 		JButton buttonPositionPopUp = new JButton("View Positions");
 		buttonPanel.add(buttonPositionPopUp, BorderLayout.CENTER);
-		
+
 		JButton buttonHome = new JButton("Home");
 		buttonHome.addActionListener(new ActionGoToHome(window));
 		buttonPanel.add(buttonHome, BorderLayout.SOUTH);
 	}
-	
 
-	
 }
-

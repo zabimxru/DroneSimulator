@@ -28,6 +28,7 @@ public class PageDroneInfo extends JPanel {
 
 	private final MainWindow window;
 	private final Drone droneData;
+	
 
 
 	public PageDroneInfo(MainWindow window, Drone droneData) { // wir wollen hier MainWindow haben weil der

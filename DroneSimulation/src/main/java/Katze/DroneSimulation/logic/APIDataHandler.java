@@ -8,6 +8,7 @@ import Katze.DroneSimulation.data.api.Drone;
 import Katze.DroneSimulation.data.api.DroneDynamic;
 import Katze.DroneSimulation.data.api.DroneType;
 import Katze.DroneSimulation.data.ui.HomepageResultlistData;
+import java.net.HttpURLConnection;
 
 public class APIDataHandler {
 	// Suchmethode für Homepage
@@ -18,7 +19,14 @@ public class APIDataHandler {
 		// Suchinput entsprechen
 		List<HomepageResultlistData> resultList = new ArrayList<>();
 
-		Drone[] drones = TestData.DRONE_DATA; // Hier wird später der APICall gemacht, alle Drohnen, die es gibt
+		APIAuthentication api = new APIAuthentication();
+		String sabrina = api.fetchData("drones");
+		List<Drone> drones = InformationRetrieval.fetchDrones(sabrina);
+//		String URL = api.fetchData(((Drone) drones).getDronetype());
+//		InformationRetrieval info = new InformationRetrieval();
+//		DroneType droneType = info.DroneTypeURL(URL);
+//		String test = droneType.getManufacturer() + droneType.getTypename();
+		// Hier wird später der APICall gemacht, alle Drohnen, die es gibt
 		// Alle Drohnendaten in dem Array, das Zeile oben angegeben wird, werden
 		// einzelnd durchgegangen und geprüft ob die daten jw. droneType oder serialNr.
 		// entsprechen
