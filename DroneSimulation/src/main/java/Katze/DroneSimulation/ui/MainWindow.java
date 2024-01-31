@@ -18,6 +18,7 @@ public class MainWindow {
 		this.frame.setTitle(title);
 		this.frame.setSize(width, height);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.setLocationRelativeTo(null);
 	}
 	
 	public void show() {

@@ -7,13 +7,13 @@ import java.net.URL;
 
 
 public class APIAuthentication {
-    private static final String API_URL = "https://dronesim.facets-labs.com/api/";
+    //private static final String API_URL = "https://dronesim.facets-labs.com/api/";
     private static final String TOKEN = "25d3818e0d0fb9288a1be8158fa58ecd4efc8ef9";
 
     public static String fetchData(String endpoint) {
         try {
             //Setup URL for ApI request
-            URL url = new URL(API_URL + endpoint + "?format=json");
+            URL url = new URL(endpoint);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             //Getter methode

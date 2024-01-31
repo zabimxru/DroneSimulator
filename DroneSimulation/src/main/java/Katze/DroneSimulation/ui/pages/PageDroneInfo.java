@@ -89,7 +89,7 @@ public class PageDroneInfo extends JPanel {
 		// Abstand
 		boxPanel.add(Box.createHorizontalStrut(50));
 		// Label für eigentlichen Drohnentyp
-		JLabel labelDroneType = new JLabel(droneData.getDronetype());
+		JLabel labelDroneType = new JLabel(droneData.getDronetype().getManufacturer() +": " + droneData.getDronetype().getTypename());
 		boxPanel.add(labelDroneType);
 		Font fontDroneType = new Font("Arial", Font.ITALIC, 15);
 		labelDroneType.setFont(fontDroneType);
@@ -102,6 +102,7 @@ public class PageDroneInfo extends JPanel {
 		popupButton.addActionListener(e -> {
 			DroneType droneType = APIDataHandler.getTypeFromDrone(droneData);
 			new PopUpDroneTypeInfo(droneType);
+			
 		});
 		boxPanel.add(popupButton);
 
@@ -115,6 +116,7 @@ public class PageDroneInfo extends JPanel {
 		};
 		JTable table = new JTable(data, columns);
 		table.setRowSelectionAllowed(true);
+		table.setAutoscrolls(false);
 		JScrollPane scroll = new JScrollPane(table);
 		scroll.setPreferredSize(new Dimension(550, 38));
 		panelFuerTabelle.add(scroll);

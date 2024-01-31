@@ -11,13 +11,14 @@ import Katze.DroneSimulation.data.api.DroneType;
 
 public class PopUpDroneTypeInfo extends JFrame {
 	public PopUpDroneTypeInfo(DroneType droneType) {
+		
 
 		this.setTitle("Drone Type Information");
 
 		// Set layout manager to BorderLayout
 		this.setLayout(new BorderLayout());
 		// Create column names
-		String[] columnNames = { "Manufacturer", "Type Name", "Weight", "Max Speed", "Min Speed", "Battery Capacity",
+		String[] columnNames = { "Manufacturer", "Type Name", "Weight", "Max Speed", "Battery Capacity",
 				"Control Range", "Max Carriage" };
 
 		// Sample data

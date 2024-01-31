@@ -4,30 +4,31 @@ import java.util.Date;
 
 public class Drone {
 	private int id;
-	private String dronetype;
+	private DroneType dronetype;
 	private Date created;
     private String serialnumber;
     private int carriageWeight;
     private String carriageType;
     
-	public Drone(int id, String dronetype, Date created, String serialnumber, int carriageWeight, String carriageType) {
+	public Drone(int id, DroneType dronetype, Date date, String serialnumber, int carriageWeight, String carriageType) {
 		this.id = id;
 		this.dronetype = dronetype;
-		this.created = created;
+		this.created = date;
 		this.serialnumber = serialnumber;
 		this.carriageWeight = carriageWeight;
 		this.carriageType = carriageType;
 	}
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getDronetype() {
+	public DroneType getDronetype() {
 		return dronetype;
 	}
-	public void setDronetype(String dronetype) {
+	public void setDronetype(DroneType dronetype) {
 		this.dronetype = dronetype;
 	}
 	public Date getCreated() {

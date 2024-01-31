@@ -1,25 +1,42 @@
 package Katze.DroneSimulation.data.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DroneType {
 	private int id;
 	private String manufacturer;
 	private String typename;
 	private double weight;
-	private double maxSpeed;
-	private double batteryCap;
-	private double controlRange;
-	private double maxCarriage;
+	@JsonProperty("max_speed")
+	private double max_speed;
+	@JsonProperty("battery_capacity")
+	private double battery_capacity;
+	@JsonProperty("control_range")
+	private double control_range;
+	@JsonProperty("max_carriage")
+	private double max_carriage;
 	
-	public DroneType(int id, String manufacturer, String typename, double weight, double maxSpeed,
-			double batteryCap, double controlRange, double maxCarriage) {
+	//Default constructor (no-args constructor)
+	public DroneType() {}
+	
+	public DroneType(
+			@JsonProperty("id") int id,
+			@JsonProperty("manufacturer") String manufacturer,
+			@JsonProperty("typename") String typename, 
+			@JsonProperty("weight") double weight, 
+			@JsonProperty("maxSpeed") double maxSpeed,
+			@JsonProperty("batteryCap") double batteryCap, 
+			@JsonProperty("controlRange") double controlRange, 
+			@JsonProperty("maxCarriage") double maxCarriage) {
 		this.id = id;
 		this.manufacturer = manufacturer;
 		this.typename = typename;
 		this.weight = weight;
-		this.maxSpeed = maxSpeed;
-		this.batteryCap = batteryCap;
-		this.controlRange = controlRange;
-		this.maxCarriage = maxCarriage;
+		this.max_speed = maxSpeed;
+		this.battery_capacity = batteryCap;
+		this.control_range = controlRange;
+		this.max_carriage = maxCarriage;
 	}
 	public int getId() {
 		return id;
@@ -46,29 +63,29 @@ public class DroneType {
 		this.weight = weight;
 	}
 	public double getMaxSpeed() {
-		return maxSpeed;
+		return max_speed;
 	}
 	public void setMaxSpeed(double maxSpeed) {
-		this.maxSpeed = maxSpeed;
+		this.max_speed = maxSpeed;
 	}
 
 	public double getBatteryCap() {
-		return batteryCap;
+		return battery_capacity;
 	}
 	public void setBatteryCap(double batteryCap) {
-		this.batteryCap = batteryCap;
+		this.battery_capacity = batteryCap;
 	}
 	public double getControlRange() {
-		return controlRange;
+		return control_range;
 	}
 	public void setControlRange(double controlRange) {
-		this.controlRange = controlRange;
+		this.control_range = controlRange;
 	}
 	public double getMaxCarriage() {
-		return maxCarriage;
+		return max_carriage;
 	}
 	public void setMaxCarriage(double maxCarriage) {
-		this.maxCarriage = maxCarriage;
+		this.max_carriage = maxCarriage;
 	}
 	
 	

@@ -17,7 +17,7 @@ import Katze.DroneSimulation.data.api.DroneDynamic;
 import Katze.DroneSimulation.data.api.DroneType;
 
 public class InformationRetrieval {
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     public List<DroneType> fetchDroneTypes(String input) {
         try {
@@ -74,9 +74,16 @@ public class InformationRetrieval {
                     String serialnumber = o.getString("serialnumber");
                     int carriageWeight = o.getInt("carriage_weight");
                     String carriageType = o.getString("carriage_type");
-
+                    
+                    //Get the ID from the URL
+                    //int DTid = extractDroneIDFromURL(droneTypeUrl);
+                    //Use the APIAuthentication-class to get JSON data of the Drone Type
+                    APIAuthentication test = new APIAuthentication();
+                    String test2 = test.fetchData(droneTypeUrl);
+                    DroneType test3 = DroneTypeURL(test2);
+                    String test4 = test3.getManufacturer() + ": " + test3.getTypename();
                     //Create a new Drones object using the constructor
-                    Drone drones = new Drone(id, droneTypeUrl, stringToDate(created), serialnumber, carriageWeight, carriageType);
+                    Drone drones = new Drone(id, test3, stringToDate(created), serialnumber, carriageWeight, carriageType);
                     //Add the object to the list
                     dronesList.add(drones);
                 }
@@ -101,7 +108,7 @@ public class InformationRetrieval {
                 JSONObject o = jsonFile.getJSONObject(i);
                 if (o.has("drone") && o.has("timestamp")) {
                     
-                	int id = o.getInt("id");
+                	
                     String timestamp = o.getString("timestamp");
                     String drone_url = o.getString("drone");
                     int speed = o.getInt("speed");
@@ -115,7 +122,7 @@ public class InformationRetrieval {
                     String status = o.getString("status");
 
                     //Create a new Drones object using the constructor
-                    DroneDynamic dd = new DroneDynamic(id, stringToDate(timestamp),	drone_url,
+                    DroneDynamic dd = new DroneDynamic(stringToDate(timestamp),	drone_url,
                     		speed,
                     		alignRoll,
                     		alignPitch,
@@ -138,7 +145,7 @@ public class InformationRetrieval {
     }
 
     public Drone DroneURL(String parameter) {
-        APIAuthentication template = new APIAuthentication();
+        //APIAuthentication template = new APIAuthentication();
 
         try {
             //Use the ObjectMapper to read the JSON string and convert it into a Drones object
@@ -150,26 +157,38 @@ public class InformationRetrieval {
         }
     }
 
-    public DroneType DroneTypeURL(String parameter) {
-        APIAuthentication template = new APIAuthentication();
-
+    public static DroneType DroneTypeURL(String parameter) {
+        //APIAuthentication template = new APIAuthentication();
+        
         try {
             //Use the ObjectMapper to read the JSON string and convert it into a Drones object
             DroneType droneTypeObject = objectMapper.readValue(parameter, DroneType.class);
             return droneTypeObject;
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Exception while deserializing DroneType: " + e.getMessage());
             return null;
         }
     }
     
     public static Date stringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	dateString = dateString.split("\\+")[0];
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
         try {
             return dateFormat.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    private static Integer extractDroneIDFromURL(String url) {
+    	try {
+    		//the format is always the same "http://dronesim.facets-labs.com/api/drones/{droneID}/"
+    		String[] parts = url.split("/");
+    		return Integer.parseInt(parts[parts.length-2]);
+    	} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+    		return null;
+    	}
     }
 }
