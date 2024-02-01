@@ -35,6 +35,7 @@ import Katze.DroneSimulation.ui.MainWindow;
 import Katze.DroneSimulation.ui.SwingTools;
 import Katze.DroneSimulation.ui.elements.SearchResultElementDroneDyn;
 import Katze.DroneSimulation.ui.elements.SearchResultElementHome;
+import Katze.DroneSimulation.ui.popups.PopUpDroneMap;
 import Katze.DroneSimulation.ui.popups.PopUpDroneTypeInfo;
 
 public class PageDroneDynamics extends JPanel {
@@ -147,25 +148,14 @@ public class PageDroneDynamics extends JPanel {
 		this.add(topContainer, BorderLayout.NORTH);
 
 		// Container mit Searchbar und Tabelle erstellen
-		JPanel searchResultContainer = new SearchResultElementDroneDyn<>(DroneDynamic.TABLE_HEADERS,
-				APIDataHandler::getDroneDynamicData);
+		JPanel searchResultContainer = new SearchResultElementDroneDyn<>(droneData, DroneDynamic.TABLE_HEADERS,
+				APIDataHandler::getDroneDynamicData, this::openMapPopUp);
 		this.add(searchResultContainer, BorderLayout.CENTER);
 		
 		createBotContent();
 
 	}
 	
-
-//			droneDynamic.getId(),
-//			droneDynamic.getTimestamp(),
-//			droneDynamic.getDrone(),
-//			droneDynamic.getSpeed(), droneDynamic.getAlignRoll(),
-//			droneDynamic.getAlignYaw(), droneDynamic.getLongitude(),
-//			droneDynamic.getLatitude(), droneDynamic.getBatteryStat(),
-//			droneDynamic.getLastSeen(), droneDynamic.getStat()},
-
-
-
 	private void createBotContent() {
 
 		JPanel panelBottom = new JPanel();
@@ -179,12 +169,13 @@ public class PageDroneDynamics extends JPanel {
 		buttonDroneInfo.addActionListener(new ActionGoToDroneInfo(window, droneData));
 		buttonPanel.add(buttonDroneInfo, BorderLayout.WEST);
 
-		JButton buttonPositionPopUp = new JButton("View Positions");
-		buttonPanel.add(buttonPositionPopUp, BorderLayout.CENTER);
-
 		JButton buttonHome = new JButton("Home");
 		buttonHome.addActionListener(new ActionGoToHome(window));
-		buttonPanel.add(buttonHome, BorderLayout.SOUTH);
+		buttonPanel.add(buttonHome, BorderLayout.SOUTH);	
 	}
 
+	private void openMapPopUp(DroneDynamic droneDyn) {
+		new PopUpDroneMap(droneDyn);
+	}
+	
 }

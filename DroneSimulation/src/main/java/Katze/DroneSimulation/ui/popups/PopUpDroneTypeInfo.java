@@ -38,7 +38,7 @@ public class PopUpDroneTypeInfo extends JFrame {
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		// Set frame properties
-		this.setSize(500, 300);
+		this.setSize(600, 400);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		// Make the frame visible

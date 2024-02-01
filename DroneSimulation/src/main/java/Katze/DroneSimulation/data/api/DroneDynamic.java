@@ -6,7 +6,7 @@ import Katze.DroneSimulation.data.TableViewable;
 
 public class DroneDynamic implements TableViewable {
 
-	public static final String[] TABLE_HEADERS = {"Timestamp", "Drone", "Speed", "Align Roll", "Control Range",
+	public static final String[] TABLE_HEADERS = {"Timestamp", "Speed", "Align Roll", "Control Range",
 			"Align Yaw", "Longitude", "Latitude", "Battery Status", "Last Seen", "Status" };
 
 	private Date timestamp;
@@ -129,7 +129,7 @@ public class DroneDynamic implements TableViewable {
 	@Override
 	public Object[] getRowData() {
 
-		return new Object[] { timestamp, drone, speed, alignRoll, controlRange, alignYaw, longitude, latitude,
+		return new Object[] { timestamp, speed, alignRoll, controlRange, alignYaw, longitude, latitude,
 				batteryStat, lastSeen, stat };
 	}
 

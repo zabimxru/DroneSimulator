@@ -5,13 +5,17 @@ import javax.swing.SwingUtilities;
 
 import Katze.DroneSimulation.data.api.Drone;
 import Katze.DroneSimulation.data.api.DroneDynamic;
+import Katze.DroneSimulation.logic.APIDataHandler;
+import Katze.DroneSimulation.logic.DataRefresher;
 import Katze.DroneSimulation.ui.pages.PageDroneDynamics;
 import Katze.DroneSimulation.ui.pages.PageDroneInfo;
 import Katze.DroneSimulation.ui.pages.PageHome;
 
 
 public class MainWindow {
+	private static final long REFRESH_TIME = 60000;
 	private final JFrame frame;
+	private final DataRefresher dataRefresher;
 	
 	public MainWindow(String title, int width, int height) {
 		this.frame = new JFrame();
@@ -19,9 +23,13 @@ public class MainWindow {
 		this.frame.setSize(width, height);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setLocationRelativeTo(null);
+		
+		this.dataRefresher = new DataRefresher(REFRESH_TIME);
 	}
 	
 	public void show() {
+		APIDataHandler.refreshData();
+		this.dataRefresher.start();
 		this.frame.setVisible(true);
 	}
 	
